@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - SocioGram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" class="rounded-full" type="image/x-icon" href="/image/favicon.ico">
+    <style>
+        body, input, button {
+            font-family: 'Roboto', sans-serif;
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 15px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            background: linear-gradient(to right, #4a5568, #2d3748);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .circle:hover {
+            transform: scale(1.05);
+            background: linear-gradient(to right, #6b7280, #4a5568);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-5xl p-8 shadow-2xl rounded-2xl bg-black animate-fade-in">
+    
+        <div class="circle-container mb-6">
+            <div class="circle" onclick="window.location.href='/user/home'">
+                <img src="/image/favicon.ico"  alt="Profile Picture" class="rounded-full">
+            </div>
+            <div class="circle" onclick="window.location.href='/user/profile'">
+                <img src="data:<%= user.profileImage.contentType %>;base64,<%= user.profileImage.data.toString('base64') %>"  alt="Profile Picture" class="rounded-full">
+            </div>
+        </div>
+        <div class="text-center  mb-6">
+            <p class="text-3xl mb-4">Log out of @<%= user.username %>?</p>
+            <p class="text-xl mb-4">This will only apply to this account, and you'll still be logged in to your other accounts.</p>
+        </div>
+        <div class="text-center space-x-4">
+            <button onclick="window.location.href='/user/home'" class="px-8 py-3 bg-gray-700 text-white font-bold rounded-full shadow-lg hover:bg-gray-800 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-opacity-50">
+                Cancel
+            </button>
+            <button onclick="window.location.href='/log/out'" class="px-8 py-3 bg-red-600 text-white font-bold rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
+                Logout
+            </button>
+        </div>
+    </div>
+</body>
+</html>

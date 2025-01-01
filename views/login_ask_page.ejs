@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocioGram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" class="rounded-full" type="image/x-icon" href="/image/favicon.ico">    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, input, button {
+            font-family: 'Roboto', sans-serif;
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white flex justify-center items-center min-h-screen">
+
+    <% var ImageName = "https://img.freepik.com/premium-photo/black-logo-with-silver-logo-that-says-silver-it_905510-10632.jpg" %>
+
+    <div class="w-full max-w-5xl p-8 shadow-2xl rounded-2xl bg-black animate-fade-in">
+        <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+            <div class="flex-1 p-4 flex justify-center">
+                <img class="max-w-[300px] md:max-w-[250px] max-h-[300px] md:max-h-[250px] w-auto h-auto rounded-lg shadow-lg hover:scale-105 transition-transform" 
+                     src="<%=ImageName%>" 
+                     alt="SocioGram Logo">
+            </div>
+            
+            <div class="flex-1 p-4 space-y-4">
+                <h1 class="text-white text-5xl md:text-7xl mb-2 font-bold">Happening now</h1>
+                <a class="text-white text-2xl md:text-4xl mb-3 font-semibold">Join today.</a>
+
+                <form action="newAccount" class="space-y-4">
+                    <button class="px-8 py-3 bg-blue-600 text-white font-bold rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
+                        Create account
+                    </button>
+                </form>
+                <form action="signin">
+                    <div class="flex items-center justify-center text-center">
+                        <h3 class="text-2xl md:text-2xl mt-2">Already have an account?</h3>
+                        <button class="ml-3 text-blue-600 bg-transparent border-2 border-blue-600 px-9 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
+                            Sign in
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

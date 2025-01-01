@@ -1,0 +1,39 @@
+/* Base styles */
+.profile-container, .search-container, .states-container {
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+/* For screens smaller than 3/4 of full width */
+@media (max-width: 75%) {
+    .stats-container {
+        display: none;
+    }
+    .profile-details {
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        transform: translateY(-100%); 
+        opacity: 0;
+        pointer-events: none; 
+    }
+    .profile-container:hover .profile-details {
+        transform: translateY(0); 
+        opacity: 1;
+        pointer-events: auto; 
+    }
+}
+
+/* For screens smaller than or equal to 1/2 of full width */
+@media (max-width: 50%) {
+    .profile-details, .stats-container, .search-container, .states-container {
+        display: none;
+    }
+}
+
+/* Additional adjustments for mobile view */
+@media (max-width: 768px) {
+    .p-6.hidden.md:block {
+        width: 100%; /* Full width on mobile */
+        padding: 0; /* Adjust padding for mobile */
+    }
+}
