@@ -383,14 +383,14 @@
                                     </div>
 
                                     <!-- Privacy Options -->
-                                    <div class="mt-4">
+                                    <!-- <div class="mt-4">
                                         <label class="block text-white mb-2 font-medium">Privacy</label>
                                         <select name="visibility" class="w-full p-2 rounded-lg bg-gray-800 text-white border border-gray-700">
                                             <option value="public">Public</option>
                                             <option value="followers">Only Followers</option>
                                             <option value="private">Private</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Post Button -->
                                     <div class="mt-4 text-right">
@@ -564,7 +564,7 @@
                             <% } ); %>
                         </div>
 
-                        <!-- followerDiv Div that show only posts -->
+                        <!-- followerDiv Div that show only follower -->
                         <div id="followerDiv" style="display: none;">
                             <!-- Content for followers -->
                             <% profileUser.allfollowers.forEach( u => { %>
@@ -590,7 +590,7 @@
                         </div>
                         
 
-                        <!-- followingDiv Div that show only posts -->
+                        <!-- followingDiv Div that show only followring -->
                         <div id="followingDiv" style="display: none;">
                             <!-- Content for following -->
                             <% profileUser.allfollowing.forEach( u => { %>

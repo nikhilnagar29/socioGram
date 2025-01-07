@@ -1,6 +1,22 @@
 // const { request } = require('express');
 const mongoose = require('mongoose') ;
-// const { profile } = require('../controllers/userController');
+const fs = require('fs');
+const path = require('path');
+
+// Define paths for default images
+const defaultBgImagePath = path.join(__dirname, '../assets/default-bg.png');
+const defaultProfileImagePath = path.join(__dirname, '../assets/default-image.png');
+
+// Load default background image
+const defaultBgImageBuffer = fs.existsSync(defaultBgImagePath)
+    ? fs.readFileSync(defaultBgImagePath)
+    : Buffer.from(''); // Fallback if file is missing
+
+// Load default profile image
+const defaultProfileImageBuffer = fs.existsSync(defaultProfileImagePath)
+    ? fs.readFileSync(defaultProfileImagePath)
+    : Buffer.from(''); // Fallback if file is missing
+
 
 const userSchema = mongoose.Schema({
     username: {
@@ -18,7 +34,7 @@ const userSchema = mongoose.Schema({
     profileImage: {
         data: {
             type: Buffer,
-            default: Buffer.from('') // Empty buffer by default
+            default: defaultProfileImageBuffer 
         },
         contentType: {
             type: String,
@@ -28,7 +44,7 @@ const userSchema = mongoose.Schema({
     backgroundImage: {
         data: {
             type: Buffer,
-            default: Buffer.from('')
+            default: defaultBgImageBuffer
         },
         contentType: {
             type: String,
