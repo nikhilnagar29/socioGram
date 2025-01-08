@@ -1,4 +1,7 @@
 node_moduals/
 
-config/development.json
+development.json
 node_modules
+.env
+
+PostAPIServer
