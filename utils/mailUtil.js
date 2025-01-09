@@ -1,18 +1,21 @@
 const nodemailer = require('nodemailer');
 const config = require('config') ;
-const dbgr = require
+// const dbgr = require
+const path = require('path') ;
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Adjust the path
+
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: config.get("EMAIL") , // Your Gmail
-        pass: config.get("EMAIL_PASS") // Your Gmail App Password
+        user: process.env.EMAIL , // Your Gmail
+        pass: process.env.EMAIL_PASS // Your Gmail App Password
     }
 });
 
 function sendOtp(email , otp , name = "user"){
     const mailOption = {
-        from: config.get("EMAIL") ,
+        from: process.env.EMAIL ,
         to: email,
         subject: '🔐 Verify Your Email for SocioGram',
         text: `Hi ${name},\n
