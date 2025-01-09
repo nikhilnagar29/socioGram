@@ -151,7 +151,8 @@ routes.post('/newAccount/verify-otp', async (req, res) => {
             // await client.del(email);
             delete otpStore[email];
             debug('OTP verified successfully for email:', email);
-            res.redirect(`/password?email=`+encodeURIComponent(email));
+            req.session.email = email;
+            res.redirect(`/password?email=`);
         } else {
             debug('Invalid OTP for email:', email);
             res.redirect('/');
@@ -167,7 +168,7 @@ routes.post('/newAccount/verify-otp', async (req, res) => {
  * Renders the password setup page
  */
 routes.get('/password', (req, res) => {
-    const { email } = req.query;
+    const email = req.session.email;
     res.render('setup_pass', { email });
 });
 
