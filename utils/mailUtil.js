@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const config = require('config') ;
+// const config = require('config') ;
 // const dbgr = require
 const path = require('path') ;
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Adjust the path

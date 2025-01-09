@@ -23,10 +23,10 @@ const REDIS_URL = process.env.REDIS_URL || 'fallback-url'; // Replace with your 
 
 // Create the Redis client
 const client = redis.createClient({
-    url: process.env.REDIS_URL,
-    socket: {
-        tls: true,
-    },
+    // url: process.env.REDIS_URL,
+    // socket: {
+    //     tls: true,
+    // },
 });
 
 // Handle Redis errors
