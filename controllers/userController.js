@@ -6,8 +6,8 @@ const debug = require('debug')("development:userController");
 exports.home = async (req, res) => {
     try {
         // let user = await userModel.findOne({ email : req.user.email });
-        let user =  await userModel.findOne({ _id: req.user._id })
-
+        let user =  await userModel.findOne({ _id: req.user._id }).select('-backgroundImage')
+        // console.log(user._id);
         const allposts = await Promise.all(
             user.notifications.map(id => postModel.findById(id).select('-image').catch(err => null) ) // Handle errors gracefully
         );
@@ -18,7 +18,7 @@ exports.home = async (req, res) => {
         for (const post of allposts) {
             if (!post) continue; // Skip if the post is null
             try {
-                const user1 = await userModel.findById(post.userid); // Fetch user info for each post
+                const user1 = await userModel.findById(post.userid).select('-backgroundImage'); // Fetch user info for each post
                 if (user1) {
                     allPostWithUser.push({ 
                         user: user1, 
@@ -66,7 +66,7 @@ exports.home = async (req, res) => {
 exports.explore = async (req, res) => {
     try {
         // let user = await userModel.findOne({ email : req.user.email });
-        let user =  await userModel.findOne({ _id: req.user._id })
+        let user =  await userModel.findOne({ _id: req.user._id }).select('-backgroundImage') 
         .catch(err => console.error(err));
        
         var uniqueUsers = [] ;
@@ -89,11 +89,11 @@ exports.notifications = (req, res) => {
 exports.likes = async (req, res) => {
     try {
         // Get the current user by email
-        const user = await userModel.findOne({ _id : req.user._id });
+        const user = await userModel.findOne({ _id : req.user._id }).select('-backgroundImage') ;
 
         // Get all saved posts for the user
         const allposts = await Promise.all(
-            user.likes.map(id => postModel.findById(id).catch(err => null)) // Handle errors gracefully
+            user.likes.map(id => postModel.findById(id).select('-image').catch(err => null)) // Handle errors gracefully
         );
 
         const allPostWithUser = [];
@@ -102,7 +102,7 @@ exports.likes = async (req, res) => {
         for (const post of allposts) {
             if (!post) continue; // Skip if the post is null
             try {
-                const user1 = await userModel.findById(post.userid); // Fetch user info for each post
+                const user1 = await userModel.findById(post.userid).select('-backgroundImage'); // Fetch user info for each post
                 if (user1) {
                     allPostWithUser.push({ 
                         user: user1, 
@@ -129,11 +129,11 @@ exports.likes = async (req, res) => {
 exports.save = async (req, res) => {
     try {
         // Get the current user by email
-        const user = await userModel.findOne({ _id : req.user._id });
+        const user = await userModel.findOne({ _id : req.user._id }).select('-backgroundImage') ;
 
         // Get all saved posts for the user
         const allposts = await Promise.all(
-            user.saved.map(id => postModel.findById(id).catch(err => null)) // Handle errors gracefully
+            user.saved.map(id => postModel.findById(id).select('-image').catch(err => null)) // Handle errors gracefully
         );
 
         const allPostWithUser = [];
@@ -142,7 +142,7 @@ exports.save = async (req, res) => {
         for (const post of allposts) {
             if (!post) continue; // Skip if the post is null
             try {
-                const user1 = await userModel.findById(post.userid); // Fetch user info for each post
+                const user1 = await userModel.findById(post.userid).select('-backgroundImage') ; // Fetch user info for each post
                 if (user1) {
                     allPostWithUser.push({ 
                         user: user1, 
@@ -194,7 +194,7 @@ exports.profileWithId = async (req, res) => {
 
         // Using Promise.all() to get all posts, followers, and following in parallel
         const allposts = await Promise.all(
-            profilePostIds.map(id => postModel.findById(id).catch(err => null))
+            profilePostIds.map(id => postModel.findById(id).select('-image').catch(err => null))
         );
         
         const allfollowers = await Promise.all(
@@ -279,11 +279,11 @@ exports.search = async (req, res) => {
                 { name: { $regex: searchTerm, $options: 'i' } },
                 { email: { $regex: searchTerm, $options: 'i' } }
             ]
-        });
+        }).select('-backgroundImage');
 
         const uniqueUsers = [...new Map(users.map(user => [user._id.toString(), user])).values()];
 
-        let user =  await userModel.findOne({ email: req.user.email })
+        let user =  await userModel.findOne({ email: req.user.email }).select('-backgroundImage')
         .catch(err => console.error("userController search " , err));
 
         console.log(user.username); // For debugging
