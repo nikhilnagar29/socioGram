@@ -22,31 +22,41 @@ const redis = require('redis');
 const REDIS_URL = process.env.REDIS_URL || 'fallback-url'; // Replace with your actual Redis URL
 
 // Create the Redis client
-const client = redis.createClient({
-    // url: process.env.REDIS_URL,
-    // socket: {
-    //     tls: true,
-    // },
-});
+// const client = redis.createClient({
+//     // url: process.env.REDIS_URL,
+//     // socket: {
+//     //     tls: true,
+//     // },
+// });
 
 // Handle Redis errors
-client.on('error', (err) => {
-    console.error('Redis Error:', err);
-    if (err.code === 'ECONNRESET') {
-        console.log('Retrying connection...');
-        client.connect().catch((retryErr) => console.error('Retry Error:', retryErr));
-    }
-});
+// client.on('error', (err) => {
+//     console.error('Redis Error:', err);
+//     if (err.code === 'ECONNRESET') {
+//         console.log('Retrying connection...');
+//         client.connect().catch((retryErr) => console.error('Retry Error:', retryErr));
+//     }
+// });
 
 
 // Connect to Redis
-client.connect()
-    .then(() => {
-        console.log('Redis connected successfully.');
-    })
-    .catch((err) => {
-        console.error('Error connecting to Redis:', err);
-    });
+// client.connect()
+//     .then(() => {
+//         console.log('Redis connected successfully.');
+//     })
+//     .catch((err) => {
+//         console.error('Error connecting to Redis:', err);
+//     });
+
+// In-memory OTP storage
+const otpStore = {};
+
+function scheduleOtpRemoval(email) {
+    setTimeout(() => {
+        delete otpStore[email];
+        debug(`OTP for ${email} removed from memory.`);
+    }, 300000); // 5 minutes in milliseconds
+}
 /**
  * Route: GET /
  * Renders the login page
@@ -83,13 +93,15 @@ routes.post('/request-otp', async (req, res) => {
         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
         const hashedOtp = await bcrypt.hash(otp, 10);
 
-        if (!client.isOpen) await client.connect();
+        // if (!client.isOpen) await client.connect();
+        otpStore[email] = hashedOtp;
+        scheduleOtpRemoval(email);
 
         const key = email.toString();
         const value = hashedOtp.toString();
         const expiryTime = 300; // 5 minutes in seconds
 
-        await client.setEx(key, expiryTime, value);
+        // await client.setEx(key, expiryTime, value);
         debug('OTP stored successfully');
 
         emailUtil.sendOtp(email, otp, name);
@@ -121,7 +133,8 @@ routes.post('/newAccount/verify-otp', async (req, res) => {
     if (!email || !otp) return res.redirect('/');
 
     try {
-        const storedOtp = await client.get(email);
+        // const storedOtp = await client.get(email);
+        const storedOtp = otpStore[email];
 
         if (!storedOtp) {
             debug('OTP expired or not found for email:', email);
@@ -132,7 +145,8 @@ routes.post('/newAccount/verify-otp', async (req, res) => {
         // console.log(otp , typeof otp);
 
         if (otp === "1111" || isOtpValid ) {
-            await client.del(email);
+            // await client.del(email);
+            delete otpStore[email];
             debug('OTP verified successfully for email:', email);
             res.redirect(`/password?email=`+encodeURIComponent(email));
         } else {
