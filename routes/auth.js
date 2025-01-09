@@ -1,6 +1,9 @@
 const express = require('express');
 const routes = express.Router();
-require('dotenv').config();
+const path = require('path');
+
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Adjust the path
+
 
 // Import required modules and utilities
 const UserModel = require('../models/usermodel');
@@ -10,17 +13,40 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const debug = require('debug')('development:auth');
 const emailUtil = require('../utils/mailUtil');
-
+ 
 // Redis client configuration
-const redis = require('redis');   
-const client = redis.createClient();
+// Import the Redis client
+const redis = require('redis');
 
-client.on('error', (err) => debug('Redis Error:', err));
+// Use the provided Redis URL from Render
+const REDIS_URL = process.env.REDIS_URL || 'fallback-url'; // Replace with your actual Redis URL
 
+// Create the Redis client
+const client = redis.createClient({
+    url: process.env.REDIS_URL,
+    socket: {
+        tls: true,
+    },
+});
+
+// Handle Redis errors
+client.on('error', (err) => {
+    console.error('Redis Error:', err);
+    if (err.code === 'ECONNRESET') {
+        console.log('Retrying connection...');
+        client.connect().catch((retryErr) => console.error('Retry Error:', retryErr));
+    }
+});
+
+
+// Connect to Redis
 client.connect()
-    .then(() => debug('Redis connected successfully.'))
-    .catch((err) => debug('Error connecting to Redis:', err));
-
+    .then(() => {
+        console.log('Redis connected successfully.');
+    })
+    .catch((err) => {
+        console.error('Error connecting to Redis:', err);
+    });
 /**
  * Route: GET /
  * Renders the login page

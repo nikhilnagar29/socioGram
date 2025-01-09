@@ -49,7 +49,7 @@
                           // Function to fetch user data from API
                           async function fetchUserData(userId) {
                             try {
-                              const response = await fetch(`http://localhost:50001/api/user/${userId}`);
+                              const response = await fetch(`https://sociogram-post-api.onrender.com/api/user/${userId}`);
                               if (!response.ok) {
                                 throw new Error("User not found");
                               }
