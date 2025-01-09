@@ -37,6 +37,90 @@
                             });
                         });
 
+
+                        const userIds = [
+                            "677ec62e2ec12356224d33cd",
+                            "677ec62e2ec12356224d33cd",
+                            "677ec62e2ec12356224d33cd",
+                          ];
+                          
+                          // Function to fetch user data from API
+                          async function fetchUserData(userId) {
+                            try {
+                              const response = await fetch(`http://localhost:50001/api/user/${userId}`);
+                              if (!response.ok) {
+                                throw new Error("User not found");
+                              }
+                              const data = await response.json(); // Parse the JSON data
+                              return data.user; // Access the user object inside the response
+                            } catch (error) {
+                              console.error("Error fetching user data for ID:", userId, error);
+                              return null; // Return null if an error occurs
+                            }
+                          }
+                          
+                          // Function to create a user div
+                          function createUserDiv(user) {
+                            const profileImageSrc = user.profileImage || "path/to/default-image.jpg"; // Fallback to default image if undefined
+                          
+                            const userDiv = document.createElement("div");
+                            userDiv.classList.add(
+                              "p-4",
+                              "bg-gray-900",
+                              "to-black",
+                              "rounded-lg",
+                              "max-w-2xl",
+                              "mx-auto",
+                              "mt-6",
+                              "relative"
+                            );
+                          
+                            userDiv.innerHTML = `
+                              <a href="/user/profile/${user._id}" class="flex space-x-4 max-w-[300px] transform transition-transform duration-300 hover:scale-110">
+                                <div class="flex-none">
+                                  <img src="${profileImageSrc}" alt="Profile Picture" class="w-12 h-12 rounded-full">
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                  <h5 class="text-lg font-semibold text-white">${user.username}</h5>
+                                  <h6 class="text-sm text-gray-400">${user.name}</h6>
+                                </div>
+                              </a>
+                            `;
+                          
+                            return userDiv;
+                          }
+                          
+                          // Function to render all users
+                          async function renderUsers() {
+                            const uniqueUserIds = [...new Set(userIds)]; // Remove duplicates
+                            const container = document.querySelector(".User-container-for-dev");
+                          
+                            if (!container) {
+                              console.error("Container not found in DOM.");
+                              return;
+                            }
+                          
+                            userIds.forEach(async (userId) =>{
+                              try {
+                                const user = await fetchUserData(userId);
+                                if (user) {
+                                  const userDiv = createUserDiv(user);
+                                  container.appendChild(userDiv); // Append the user div to the container
+                                }
+                              } catch (error) {
+                                console.error(`Failed to render user with ID: ${userId}`, error);
+                              }
+                            })
+                          }
+                          
+                          // Ensure DOM is fully loaded before rendering users
+                          document.addEventListener("DOMContentLoaded", () => {
+                            // console.log(userIds);
+                            renderUsers();
+                            
+                          });
+                          
+                        
                         //for see more button 
                         // JavaScript
 
@@ -149,7 +233,8 @@
             alert('An error occurred. Please try again.');
         }
     }
-    
+
+
     
 
 

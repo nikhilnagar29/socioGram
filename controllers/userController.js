@@ -9,7 +9,7 @@ exports.home = async (req, res) => {
         let user =  await userModel.findOne({ _id: req.user._id })
 
         const allposts = await Promise.all(
-            user.notifications.map(id => postModel.findById(id).catch(err => null)) // Handle errors gracefully
+            user.notifications.map(id => postModel.findById(id).select('-image').catch(err => null) ) // Handle errors gracefully
         );
 
         const allPostWithUser = [];
@@ -30,17 +30,22 @@ exports.home = async (req, res) => {
                 console.error('Error fetching user for post:', post._id, error);
             }
         }
+
+        const allPostIds = [] ;
+        user.notifications.forEach(id => allPostIds.push(id)); // Convert ObjectId to string
         // console.log(allPostWithUser)
+        
         res.render('home', {
           mode: 'home',
           user ,
-          allPostWithUser
+          allPostWithUser , 
+          allPostIds , 
         });
       } catch (error) {
-        debug('home page', error);
+        console.log('home page', error);
         res.status(500).send('Internal Server Error');
       }    
-};
+}; 
 
 // exports.profileChange = async (req , res) =>{
 //     try{

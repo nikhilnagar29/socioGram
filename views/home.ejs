@@ -828,6 +828,17 @@
                     <% } %>
 
                     <% if(mode == "save" || mode == "home" || mode == "likes"){ %>
+
+                        <div id="posts" class="posts-container">
+                            <!-- Posts will be dynamically added here -->
+                        </div>
+
+                        
+                        
+                        
+                       
+                        
+
                         <% allPostWithUser.reverse().forEach( (a)=>{ %>
 
                             <div class="p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-lg max-w-2xl mx-auto mt-6 relative">
@@ -887,13 +898,54 @@
     
                                 <!-- Image Post -->
                                 <!-- Image Post -->
-                                <div class="mt-4">
-                                    <!-- If image exists, show the image, else show a default image -->
-                                    <img src="<%= a.post.image?.data 
-                                        ? 'data:' + a.post.image.contentType + ';base64,' + a.post.image.data.toString('base64') 
-                                        : '/images/default.png' %>" 
-                                    alt="Post Image" class="w-full rounded-lg">
+                                <!-- <div class="mt-4">
+                                    <img id="post-image-<%= a.post._id %>" 
+                                         alt="Post Image" class="w-full rounded-lg">
+                                </div> -->
+                                <!-- HTML -->
+                                <div id="post-container" class="mt-4">
+                                    <img id="post-image-<%= a.post._id %>" class="w-full rounded-lg" src="" alt="Loading..." />
                                 </div>
+
+                                <script>
+                                    // JavaScript
+                                    async function fetchAndDisplayPostImage(postId) {
+                                        try {
+                                            // Set loading spinner or placeholder image
+                                            const imgElement = document.getElementById(`post-image-${postId}`);
+                                            if (imgElement) {
+                                                imgElement.src = ''; // Show loading spinner
+                                            }
+
+                                            // Fetch post data
+                                            const response = await fetch(`http://localhost:50001/api/posts/${postId}`);
+                                            if (!response.ok) throw new Error('Failed to fetch post data');
+
+                                            const postData = await response.json();
+                                            const postImageUrl = postData.image; // Assuming the post data includes image URL
+
+                                            // Update the image source
+                                            if (imgElement) {
+                                                imgElement.src = postImageUrl ? postImageUrl : 'path/to/default/image.jpg'; // Fallback to default image
+                                            }
+                                        } catch (error) {
+                                            console.error(error);
+
+                                            // Handle error and show fallback image
+                                            const imgElement = document.getElementById(`post-image-${postId}`);
+                                            if (imgElement) {
+                                                imgElement.src = 'path/to/default/image.jpg'; // Fallback to default image
+                                            }
+                                        }
+                                    }
+
+                                    // Call the function
+                                    var postId = "<%=a.post._id%>"
+                                    fetchAndDisplayPostImage(postId); // Replace '123' with your actual post ID
+
+                                </script>
+
+                                
 
     
                                 <!-- Interaction Options: Like, Comment, Save -->
@@ -934,6 +986,8 @@
                                 </div>
                             
                             </div>
+
+
                         <% } ) %>
                     <% } %>
                     
@@ -1007,77 +1061,20 @@
                         </div>
                     </div>
             
-                    <!-- States Section
+                    <!-- States Section -->
                     <div class="w-full max-w-[400px] h-[450px] border border-black rounded-2xl mt-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-                        <h3 class="text-lg font-semibold text-center text-white py-4">Request</h3>
+                        <h3 class="text-lg font-semibold text-center text-white py-4">Users</h3>
                         <div id="scrollable-products" class="space-y-4 px-4 max-h-[370px] overflow-y-auto h-[400px]">
                             
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg">
-                                <img src="path/to/user1-image.jpg" alt="User 1" class="w-10 h-10 rounded-full object-cover">
-                                <div class="flex-1">
-                                    <span class="text-white text-lg">User 1</span>
-                                    <p class="text-xs text-gray-400">Online</p>
-                                </div>
-                            </div>
+                           
+
+                            <div class="User-container-for-dev">
+                                <!-- User list will be dynamically rendered here -->
+                              </div>
+                            
                         </div>
                     </div>
-                </div> -->
+                </div> 
             </div>
             
             <script>
