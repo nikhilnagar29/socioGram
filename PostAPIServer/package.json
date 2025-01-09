@@ -1,0 +1,24 @@
+{
+  "name": "postapiserver",
+  "version": "1.0.0",
+  "description": "this make for handle post API that help us to make this project more fast",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "make it more fast"
+  },
+  "keywords": [
+    "kuch-nhi"
+  ],
+  "author": "Nikhil Nagar",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.3"
+  }
+}
