@@ -104,11 +104,13 @@ routes.post('/request-otp', async (req, res) => {
         // await client.setEx(key, expiryTime, value);
         debug('OTP stored successfully');
 
-        emailUtil.sendOtp(email, otp, name);
+        emailUtil.sendOtp(email, otp, name); 
 
-        res.redirect(`/newAccount/verification?email=`+encodeURIComponent(email));
+        // Change the redirect to use a session or a secure token
+        req.session.email = email; // Store the email securely in the session
+        res.redirect(`/newAccount/verification`);
     } catch (error) {
-        debug('Error in request-otp:', error);
+        console.log('Error in request-otp:', error);
         res.status(500).json({ message: 'Failed to process OTP request' });
     }
 });
@@ -118,7 +120,8 @@ routes.post('/request-otp', async (req, res) => {
  * Renders the OTP verification page
  */
 routes.get('/newAccount/verification', (req, res) => {
-    const { email } = req.query;
+    const email = req.session.email; // Retrieve email from the session
+    if (!email) return res.redirect('/'); // Redirect if no email found
     res.render('otp_page', { email });
 });
 
@@ -154,7 +157,7 @@ routes.post('/newAccount/verify-otp', async (req, res) => {
             res.redirect('/');
         }
     } catch (error) {
-        debug('Error in OTP verification:', error);
+        console.log('Error in OTP verification:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
@@ -192,10 +195,10 @@ routes.post('/setup-password', async (req, res) => {
             debug('User not found for email:', email);
             return res.status(404).json({ message: 'User not found' });
         }
-
+        const jwtSecret = 'default_secret';
         const token = jwt.sign(
             { email , _id : updatedUser._id }, 
-            'default_secret', 
+            jwtSecret, 
             { expiresIn: '240h' }
         );
 

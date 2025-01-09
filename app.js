@@ -1,16 +1,11 @@
 // Import necessary modules
 const express = require('express');
 require('dotenv').config(); 
-const usermodel = require('./models/usermodel');
-const user = usermodel;
-const nodemailer = require('nodemailer');
-const otpGenerator = require('otp-generator');
-const bcrypt = require('bcrypt');
+
 const path = require('path');
-const redis = require('redis');    
-const { promisify } = require('util'); 
-const jwt = require('jsonwebtoken');
+
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 const db = require('./config/mongoose-connection') ;
 const authRoutes = require('./routes/auth') 
@@ -27,7 +22,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use(cookieParser()); // Corrected to call cookieParser()
 
-// Redis client
+app.use(
+    session({
+        secret: 'your-secret-key', // Replace with a strong, unique secret
+        resave: false,             // Prevent unnecessary session saves
+        saveUninitialized: true,   // Save new sessions
+        cookie: { 
+            secure: false,         // Set to `true` if using HTTPS
+            maxAge: 300000         // Session expiration time in milliseconds (e.g., 5 minutes)
+        },
+    })
+);
 
 app.use('/' , authRoutes);
 
