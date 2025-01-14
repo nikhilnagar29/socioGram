@@ -1,6 +1,0 @@
-{
-    "MONGODB_URI" : "mongodb://localhost:27017" ,
-    "EMAIL" : "sociogram.verify.team@gmail.com" ,
-    "EMAIL_PASS" : "gmthpqfgdmkxefqp" ,
-    "COOKIES_PASS" : "default_secret" 
-}
