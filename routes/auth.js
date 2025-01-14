@@ -1,6 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // Adjust the path
 
@@ -131,7 +132,10 @@ routes.get('/newAccount/verification', (req, res) => {
  */
 routes.post('/newAccount/verify-otp', async (req, res) => {
     const { otp } = req.body;
-    const { email } = req.query;
+    const { el } = req.query;
+    
+    const email = el ;
+    console.log("yes" , email);
 
     if (!email || !otp) return res.redirect('/');
 
@@ -152,7 +156,7 @@ routes.post('/newAccount/verify-otp', async (req, res) => {
             delete otpStore[email];
             debug('OTP verified successfully for email:', email);
             req.session.email = email;
-            res.redirect(`/password?email=`);
+            res.redirect(`/password`);
         } else {
             debug('Invalid OTP for email:', email);
             res.redirect('/');

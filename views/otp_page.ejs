@@ -32,7 +32,8 @@
                     alt="Profile Image">
             </a>
         </div>
-        <form action="verify-otp?email=<%= email %>" method="post">
+        <form action="verify-otp?el=<%= encodeURIComponent(email) %>" method="post">
+
             <div class="text-center text-white mb-6">
                 <h3 class="text-xl font-bold mb-2">We Sent You a Code</h3>
                 <p class="text-sm text-gray-400" >Enter the code below to verify <span class="font-semibold text-blue-400"><%= email %></span>.</p>
