@@ -277,7 +277,6 @@ exports.search = async (req, res) => {
             $or: [
                 { username: { $regex: searchTerm, $options: 'i' } },
                 { name: { $regex: searchTerm, $options: 'i' } },
-                { email: { $regex: searchTerm, $options: 'i' } }
             ]
         }).select('-backgroundImage');
 

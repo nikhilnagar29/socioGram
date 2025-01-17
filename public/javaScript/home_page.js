@@ -39,6 +39,7 @@
 
 
                         const userIds = [
+                            "6780132080f3f2c2307fce02",
                             "677fc95ebd801f87048fc5f2",
                             "677fc4c959b22fb5c566e69d",
                             "677fbe0fb63338acfbca12ec",
@@ -49,7 +50,8 @@
                           // Function to fetch user data from API
                           async function fetchUserData(userId) {
                             try {
-                              const response = await fetch(`https://sociogram-post-api.onrender.com/api/user/${userId}`);
+                                const url = "https://sociogram-qnup.onrender.com"
+                              const response = await fetch(`${url}/api/user/${userId}`);
                               if (!response.ok) {
                                 throw new Error("User not found");
                               }
