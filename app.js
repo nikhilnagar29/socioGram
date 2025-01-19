@@ -36,6 +36,10 @@ app.use(
 
 app.use('/' , authRoutes);
 
+app.get('/check', (req, res) => {
+    res.send('ok');
+});
+
 app.use('/user' , userRoutes);
 
 app.use('/post', postRoutes);
