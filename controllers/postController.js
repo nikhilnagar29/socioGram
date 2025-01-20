@@ -114,7 +114,7 @@ exports.getPost = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-
+ 
 
 exports.deletePost = async (req, res) => {
     try {
@@ -122,10 +122,10 @@ exports.deletePost = async (req, res) => {
         const postId = req.params.postId; // Use `params` instead of `param`
 
         const user = await userModel.findById(userId); 
-        console.log("hello", { user , postId});
+        // console.log("hello", { user , postId});
 
         // Filter out the postId from the user's post array
-        user.post = user.post.filter(id => id.toString() !== postId.toString());
+        // user.post = user.post.filter(id => id.toString() !== postId.toString());
         await user.save();
 
         console.log("Post deleted from user posts array");

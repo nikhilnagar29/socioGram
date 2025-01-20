@@ -443,168 +443,170 @@
                         <!-- post Div that show only posts -->
                         <div id="postDiv" style="display: none;">
                             <% profileUser.allposts.reverse().forEach( (post)=>{ %>
-                                <div class="space-y-4">
-                                    <div class="p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-lg max-w-2xl mx-auto mt-6 relative">
-                                        
-                                        <!-- Three-Dot Menu -->
-                                        <% var countOfPost = 0 %>
-                                        <% if ( profileUser._id.toString() == user._id.toString() ) { %>
-                                            <% countOfPost += 1 %>
-                                            <!-- Container for the 3-dot menu -->
+                                <% if (post) { %>
+                                    <div class="space-y-4">
+                                        <div class="p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-lg max-w-2xl mx-auto mt-6 relative">
                                             
-                                            <div class="absolute top-2 right-2">
-                                                <!-- 3-dot button -->
+                                            <!-- Three-Dot Menu -->
+                                            <% var countOfPost = 0 %>
+                                            <% if ( profileUser._id.toString() == user._id.toString() && post) { %>
+                                                <% countOfPost += 1 %>
+                                                <!-- Container for the 3-dot menu -->
+                                                
+                                                <div class="absolute top-2 right-2">
+                                                    <!-- 3-dot button -->
+                                                    <form action="/post/<%= post._id %>" method="get">
+                                                        <button id="threeDotButton" class="text-gray-500 p-2 hover:bg-gray-200 rounded-full">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                    <!-- Dropdown Menu (hidden by default) -->
+                                                    
+                                                </div>
+
+                                            
+
+                                            <% } %>
+
+                                            
+                
+                                            <!-- Post Container -->
+                                            <a href="/user/profile/<%= profileUser._id %>" class="flex space-x-4 max-w-[300px] transform transition-transform duration-300 hover:scale-110">
+                                                <!-- Profile Image and Username -->
+                                                <div class="flex-none">
+                                                    
+                                                    <img src="data:<%= profileUser.profileImage.contentType %>;base64,<%= profileUser.profileImage.data.toString('base64') %>"  alt="Profile Picture" class="w-12 h-12 rounded-full">
+                                                </div>
+                                                <div class="flex flex-col justify-center">
+                                                    <!-- Username -->
+                                                    <h5 class="text-lg font-semibold text-white"><%= profileUser.username %></h5>
+                                                    <!-- Name -->
+                                                    <h6 class="text-sm text-gray-400"><%= profileUser.name %></h6>
+                                                </div>
+                                            </a>
+                                            
+                                            <!-- Post Content -->
+                                            <div class="mt-4">
+                                                <p id="content" class="line-clamp-2 text-white text-base overflow-hidden max-h-24 transition-max-height duration-300">
+                                                    <%= post.content %>
+                                                </p>
                                                 <form action="/post/<%= post._id %>" method="get">
-                                                    <button id="threeDotButton" class="text-gray-500 p-2 hover:bg-gray-200 rounded-full">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01" />
-                                                        </svg>
+                                                    <button id="seeMoreBtn" class="ml-1 text-blue-500 font-semibold hover:underline">
+                                                        See More
                                                     </button>
                                                 </form>
-                                                <!-- Dropdown Menu (hidden by default) -->
-                                                
                                             </div>
+                
+                                            <!-- Image Post -->
+                                            <!-- Image Post -->
+                                            
 
-                                           
-
-                                        <% } %>
-
-                                        
+                                            <div id="post-container" class="mt-4">
+                                                <img id="post-image-<%= post._id %>" class="w-full rounded-lg" src="" alt="Loading..." />
+                                            </div>
             
-                                        <!-- Post Container -->
-                                        <a href="/user/profile/<%= profileUser._id %>" class="flex space-x-4 max-w-[300px] transform transition-transform duration-300 hover:scale-110">
-                                            <!-- Profile Image and Username -->
-                                            <div class="flex-none">
-                                                
-                                                <img src="data:<%= profileUser.profileImage.contentType %>;base64,<%= profileUser.profileImage.data.toString('base64') %>"  alt="Profile Picture" class="w-12 h-12 rounded-full">
-                                            </div>
-                                            <div class="flex flex-col justify-center">
-                                                <!-- Username -->
-                                                <h5 class="text-lg font-semibold text-white"><%= profileUser.username %></h5>
-                                                <!-- Name -->
-                                                <h6 class="text-sm text-gray-400"><%= profileUser.name %></h6>
-                                            </div>
-                                        </a>
-                                        
-                                        <!-- Post Content -->
-                                        <div class="mt-4">
-                                            <p id="content" class="line-clamp-2 text-white text-base overflow-hidden max-h-24 transition-max-height duration-300">
-                                                <%= post.content %>
-                                            </p>
-                                            <form action="/post/<%= post._id %>" method="get">
-                                                <button id="seeMoreBtn" class="ml-1 text-blue-500 font-semibold hover:underline">
-                                                    See More
-                                                </button>
-                                            </form>
-                                        </div>
-            
-                                        <!-- Image Post -->
-                                        <!-- Image Post -->
-                                        
-
-                                        <div id="post-container" class="mt-4">
-                                            <img id="post-image-<%= post._id %>" class="w-full rounded-lg" src="" alt="Loading..." />
-                                        </div>
-        
-                                        <script>
-                                            // JavaScript
-                                            async function fetchAndDisplayPostImage(postId) {
-                                                try {
-                                                    // Set loading spinner or placeholder image
-                                                    const imgElement = document.getElementById(`post-image-${postId}`);
-                                                    if (imgElement) {
-                                                        imgElement.src = ''; // Show loading spinner
-                                                    }
-        
-                                                    // Fetch post data
-                                                    const url = "https://sociogram-qnup.onrender.com"
-                                                    const response = await fetch(`${url}/api/posts/${postId}`);
-                                                    if (!response.ok) {
+                                            <script>
+                                                // JavaScript
+                                                async function fetchAndDisplayPostImage(postId) {
+                                                    try {
+                                                        // Set loading spinner or placeholder image
                                                         const imgElement = document.getElementById(`post-image-${postId}`);
                                                         if (imgElement) {
-                                                            imgElement.style.display = 'none'; // Hide the image element
+                                                            imgElement.src = ''; // Show loading spinner
                                                         }
-                                                        throw new Error('Failed to fetch post data');
-                                                    }
-                                                    if (!response.ok) throw new Error('Failed to fetch post data');
-        
-                                                    const postData = await response.json();
-                                                    const postImageUrl = postData.image; // Assuming the post data includes image URL
-        
-                                                    // Update the image source
-                                                    if (imgElement) {
-                                                        imgElement.src = postImageUrl ? postImageUrl : 'path/to/default/image.jpg'; // Fallback to default image
-                                                    }
-                                                } catch (error) {
-                                                    console.error(error);
-        
-                                                    // Handle error and show fallback image
-                                                    const imgElement = document.getElementById(`post-image-${postId}`);
-                                                    if (imgElement) {
-                                                        imgElement.src = 'path/to/default/image.jpg'; // Fallback to default image
+            
+                                                        // Fetch post data
+                                                        const url = "https://sociogram-qnup.onrender.com"
+                                                        const response = await fetch(`${url}/api/posts/${postId}`);
+                                                        if (!response.ok) {
+                                                            const imgElement = document.getElementById(`post-image-${postId}`);
+                                                            if (imgElement) {
+                                                                imgElement.style.display = 'none'; // Hide the image element
+                                                            }
+                                                            throw new Error('Failed to fetch post data');
+                                                        }
+                                                        if (!response.ok) throw new Error('Failed to fetch post data');
+            
+                                                        const postData = await response.json();
+                                                        const postImageUrl = postData.image; // Assuming the post data includes image URL
+            
+                                                        // Update the image source
+                                                        if (imgElement) {
+                                                            imgElement.src = postImageUrl ? postImageUrl : 'path/to/default/image.jpg'; // Fallback to default image
+                                                        }
+                                                    } catch (error) {
+                                                        console.error(error);
+            
+                                                        // Handle error and show fallback image
+                                                        const imgElement = document.getElementById(`post-image-${postId}`);
+                                                        if (imgElement) {
+                                                            imgElement.src = 'path/to/default/image.jpg'; // Fallback to default image
+                                                        }
                                                     }
                                                 }
-                                            }
-        
-                                            // Call the function
-                                            var postId = "<%= post._id%>"
-                                            fetchAndDisplayPostImage(postId); // Replace '123' with your actual post ID
-        
-                                        </script>
-        
-
             
-                                        <!-- Interaction Options: Like, Comment, Save -->
-                                        <div class="mt-4 flex justify-between items-center">
-                                            <!-- Like Button -->
-                                            <!-- <button class=" like-button <%= post.likes.includes(user._id) ? 'liked' : '' %> text-white flex items-center space-x-2 hover:text-blue-500 transition-colors"  data-post-id="<%= post._id %>">
-                                                <svg xmlns="http://www.w3.org/2000/svg"  class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                </svg>
-                                                <span>Like</span>
-                                            </button> -->
-                                            <button 
-                                                class="like-button rounded-full <%= post.likes.includes(user._id) ? 'liked' : '' %>" 
-                                                data-post-id="<%= post._id %>">
-                                                <span class="like-count"><%= post.likes.length %></span> 
-                                                <span class="like-text"><%= post.likes.includes(user._id) ? 'Unlike' : 'Like' %></span>
-                                            </button>
-
+                                                // Call the function
+                                                var postId = "<%= post._id%>"
+                                                fetchAndDisplayPostImage(postId); // Replace '123' with your actual post ID
             
-                                            <!-- Comment Button -->
-                                            <form action="/post/<%= post._id %>" method="get">
-                                                <button class="text-white flex items-center space-x-2 hover:text-blue-500 transition-colors">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                            </script>
+            
+
+                
+                                            <!-- Interaction Options: Like, Comment, Save -->
+                                            <div class="mt-4 flex justify-between items-center">
+                                                <!-- Like Button -->
+                                                <!-- <button class=" like-button <%= post.likes.includes(user._id) ? 'liked' : '' %> text-white flex items-center space-x-2 hover:text-blue-500 transition-colors"  data-post-id="<%= post._id %>">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"  class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                                     </svg>
-                                                    <span>Comment</span>
+                                                    <span>Like</span>
+                                                </button> -->
+                                                <button 
+                                                    class="like-button rounded-full <%= post.likes.includes(user._id) ? 'liked' : '' %>" 
+                                                    data-post-id="<%= post._id %>">
+                                                    <span class="like-count"><%= post.likes.length %></span> 
+                                                    <span class="like-text"><%= post.likes.includes(user._id) ? 'Unlike' : 'Like' %></span>
                                                 </button>
-                                            </form>
-            
-                                            <!-- Save Button -->
-                                            <!-- <button class="text-white flex items-center space-x-2 hover:text-blue-500 transition-colors">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h14a2 2 0 012 2v16a1 1 0 01-1 1h-1zm-7-11a2 2 0 100-4 2 2 0 000 4z"/>
-                                                </svg>
-                                                <span>Save</span>
-                                            </button> -->
-                                            <button 
-                                                class="saveButton text-white flex items-center space-x-2 hover:text-blue-500 transition-colors <%= user.saved.includes(post._id) ? 'saved text-blue-500' : '' %>" 
-                                                data-post-id="<%= post._id %>" 
-                                                onclick="toggleSave('<%= post._id %>')">
-                                                <svg xmlns="http://www.w3.org/2000/svg" id="saveIcon-<%= post._id %>" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                                        d="M19 21l-7-5-7 5V5a2 2 0 012-2h14a2 2 0 012 2v16a1 1 0 01-1 1h-1zm-7-11a2 2 0 100-4 2 2 0 000 4z"/>
-                                                </svg>
-                                                <span id="saveText-<%= post._id %>"><%= user.saved.includes(post._id) ? 'Saved' : 'Save' %></span>
-                                            </button>
+
+                
+                                                <!-- Comment Button -->
+                                                <form action="/post/<%= post._id %>" method="get">
+                                                    <button class="text-white flex items-center space-x-2 hover:text-blue-500 transition-colors">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                                        </svg>
+                                                        <span>Comment</span>
+                                                    </button>
+                                                </form>
+                
+                                                <!-- Save Button -->
+                                                <!-- <button class="text-white flex items-center space-x-2 hover:text-blue-500 transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h14a2 2 0 012 2v16a1 1 0 01-1 1h-1zm-7-11a2 2 0 100-4 2 2 0 000 4z"/>
+                                                    </svg>
+                                                    <span>Save</span>
+                                                </button> -->
+                                                <button 
+                                                    class="saveButton text-white flex items-center space-x-2 hover:text-blue-500 transition-colors <%= user.saved.includes(post._id) ? 'saved text-blue-500' : '' %>" 
+                                                    data-post-id="<%= post._id %>" 
+                                                    onclick="toggleSave('<%= post._id %>')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" id="saveIcon-<%= post._id %>" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                                            d="M19 21l-7-5-7 5V5a2 2 0 012-2h14a2 2 0 012 2v16a1 1 0 01-1 1h-1zm-7-11a2 2 0 100-4 2 2 0 000 4z"/>
+                                                    </svg>
+                                                    <span id="saveText-<%= post._id %>"><%= user.saved.includes(post._id) ? 'Saved' : 'Save' %></span>
+                                                </button>
 
 
 
+                                            </div>
+                
                                         </div>
-            
-                                    </div>
-                                </div>  
+                                    </div>  
+                                <% } %>
                             <% } ); %>
                         </div>
 

@@ -6,6 +6,7 @@ const path = require('path');
 
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const cors = require('cors');
 
 const db = require('./config/mongoose-connection') ;
 const authRoutes = require('./routes/auth') 
@@ -33,6 +34,12 @@ app.use(
         },
     })
 );
+
+app.use(cors({
+    origin: '*', // Replace '*' with your allowed origin(s), e.g., 'http://example.com'
+    methods: ['GET'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type'], // Allowed headers
+}));
 
 app.use('/' , authRoutes);
 
