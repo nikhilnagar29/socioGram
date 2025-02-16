@@ -6,13 +6,6 @@ A social media platform for sharing posts and connecting with friends.
 You can visit or create an account on SocioGram at:
 ➡️ [https://nikhil-nagar.vercel.app/sociogram](https://nikhil-nagar.vercel.app/sociogram)
 
-## 📽️ Demo Video
-<iframe width="560" height="315" 
-src="https://youtu.be/b6CPLd4Nics" 
-frameborder="0" allow="accelerometer; autoplay; clipboard-write; 
-encrypted-media; gyroscope; picture-in-picture" 
-allowfullscreen></iframe>
-
 ---
 ## 📌 Project Title and Description
 **SocioGram** is a social media platform where users can create profiles, share posts, like, comment, and follow others. It offers secure authentication and an engaging user experience.
